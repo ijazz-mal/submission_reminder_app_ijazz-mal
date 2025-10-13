@@ -1,0 +1,10 @@
+student, assignment, submission status
+Chinemerem, Shell Navigation, not submitted
+Chiagoziem, Git, submitted
+Divine, Shell Navigation, not submitted
+Anissa, Shell Basics, submitted
+Killua, Electict yoyo prototype, submitted
+Guevara, Pythone Basics, submitted
+Jayz, SLTD Formative, not submitted
+Eric, Leadership quiz-01, submitted
+Mahoraga, Breathing tech, not submitted
