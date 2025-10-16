@@ -6,18 +6,19 @@ read -p "Your name, please?" username
 mkdir -p "submission_reminder_$username"
 dir="submission_reminder_$username"
 mkdir -p $dir/app $dir/modules $dir/assets $dir/config
-if [ -f $dir/app/reminder.sh ]; then
-echo "al"
-else
-cat << 'EOF' > $dir/app/reminder.sh
+export username
+export dir
+
+if [ ! -f $dir/app/reminder.sh ]; then
+cat > $dir/app/reminder.sh << 'EOF'
 #!/bin/bash
 
 # Source environment variables and helper functions
-source ./config/config.env
-source ./modules/functions.sh
+source ./$dir/config/config.env
+source ./$dir/modules/functions.sh
 
 # Path to the submissions file
-submissions_file="./assets/submissions.txt"
+submissions_file="$dir/assets/submissions.txt"
 
 # Print remaining time and run the reminder function
 echo "Assignment: $ASSIGNMENT"
@@ -28,9 +29,10 @@ check_submissions $submissions_file
 EOF
 fi
 
-if [ -f $dir/modules/functions.sh ]; then
-echo "all"
-else
+
+
+
+if [ ! -f $dir/modules/functions.sh ]; then
 cat << 'EOF' > $dir/modules/functions.sh
 #!/bin/bash
 
@@ -55,9 +57,9 @@ function check_submissions {
 EOF
 fi
 
-if [  -f $dir/assets/submissions.txt ]; then
-echo "all se"
-else
+
+
+if [ ! -f $dir/assets/submissions.txt ]; then
 cat << 'EOF' > $dir/assets/submissions.txt
 student, assignment, submission status
 Chinemerem, Shell Navigation, not submitted
@@ -72,41 +74,22 @@ Mahoraga, Git, not submitted
 EOF
 fi
 
-if [ -f $dir/config/config.env ]; then
-echo "all set"
-else
+if [ ! -f $dir/config/config.env ]; then
 cat << 'EOF' > $dir/config/config.env
 # This is the config file
 ASSIGNMENT="Shell Basics"
 DAYS_REMAINING=2
 EOF
 fi
-if [ -f $dir/copilot_shell_script.sh ]; then
-echo ""
-else
-cat << 'EOF' > $dir/copilot_shell_script.sh
-#!/usr/bin/env bash
 
-name=$(basename "$PWD" | awk -F'_' '{print $NF}')
-read -r -p "Hey $name, please enter your assignment name: " ass_name
 
-sed -i "/ASSIGNMENT/s/=.*/=\"$ass_name\"/g" config/config.env
-EOF
-fi
-
-if [ -f $dir/startup.sh ]; then
-echo "all set!!"
-else
+if [ ! -f $dir/startup.sh ]; then
 cat << 'EOF' > $dir/startup.sh
 #!/usr/bin/env bash
 # This file start up the assignment reminder app
-
-./copilot_shell_script.sh
-./app/reminder.sh
+bash $dir/app/reminder.sh
 EOF
 fi
 
 find . -name "*.sh" | xargs chmod 777
-
-cd $dir
-./startup.sh
+./copilot_shell_script.sh
